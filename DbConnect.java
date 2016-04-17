@@ -1,5 +1,7 @@
 // connect to mysql database
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DbConnect {
 
@@ -32,9 +34,12 @@ public class DbConnect {
 		
 		try{
 			String driver = "com.mysql.jdbc.Driver";
-			String url = "jdbc:mysql://localhost:3306/exams";
-			String username = "root";
-			String pwd = "";
+//			String url = "jdbc:mysql://localhost:3306/exams";
+//			String username = "root";
+//			String pwd = "";
+			String url = "jdbc:mysql://www.greenspeedreader.com:3306/kartpa5_gsr";
+			String username = "kartpa5_twoputt";
+			String pwd = "I_luv2_putt";
 			Class.forName(driver);
 			
 			Connection conn = DriverManager.getConnection(url, username, pwd);
@@ -70,14 +75,25 @@ public class DbConnect {
 	}
 	
 	
-	public static void post() throws Exception{
+	public static void post(ArrayList<String[]> list) throws Exception{
+
+		ArrayList<String[]> load = list;
+		System.out.println(Arrays.toString(load.get(0)));
+		
+		
 //		final String var1 = "john";
 //		final String var2 = "smith";
 //		final String[] array1 = {"john","smith","bill","stacie","summer","pol","seth"};
 //		final String[] array2 = {"jeep","lambo","ferrari","hummer","bugatti", "ford","chevy"};
-
-ImportTxtFile.allColumns
-		
+//
+//		ArrayList<String[]> load = new ArrayList<String[]>();
+//		load.add( array1 );
+//		load.add( array2 );
+//		
+//		//printing list of String arrays in the ArrayList
+//        for (String[] strArr : load) {
+//            System.out.println(Arrays.toString(strArr));
+//        }
 		
 		try{
 			Connection con = getConnection();
@@ -87,12 +103,68 @@ ImportTxtFile.allColumns
 			PreparedStatement posted = con.prepareStatement("INSERT into buildings (name,availability) VALUES (?,?)");
 			
 			
-			// w. diffrnt lngth arrays, will only insert amnt of values equal to smalst array length
-			for(int i = 0; i < array1.length; i++) {
-	    	      posted.setString (1, array1[i]); // this inserts array into values(?) of query
-	    	      posted.setString (2, array2[i]); // this inserts array into values(?) of query
-	    	      posted.executeUpdate();
-	    	  }
+// w. diffrnt lngth arrays, will only insert amnt of values equal to smalst array length
+//			for(int i = 0; i < array1.length; i++) {
+//	    	      posted.setString (1, array1[i]); // this inserts array into values(?) of query
+//	    	      posted.setString (2, array2[i]); // this inserts array into values(?) of query
+//	    	      posted.executeUpdate();
+//	    	  }
+//			String[] test = {"1","2","3","1","2","4","6"};
+//			String[] test2 = {"hi","you","are","a","winner","at","ovka"};
+//			
+//			int k=1;
+//			for(String[] field : load){
+//				 for(String arrayListElement : field){			
+//				 posted.setString(k, arrayListElement);					 
+//				 }
+//				k++;
+//			}
+//			
+//			posted.executeUpdate();
+			
+//			for(int i = 0; i < load.size(); i++){
+//				System.out.println(Arrays.toString(load.get(i)));
+//					for(int k = 0; k < load.get(0).length; k++) {						
+//						//System.out.println(load.get(0).length);
+//							for(int j = 1; j <= load.size(); j++){
+//								//System.out.println(j);
+//				    	      posted.setString (j, load.get(i)[k]); // this inserts array into values(?) of query
+//							}
+//						posted.addBatch();
+//						posted.executeUpdate();
+//			    	}
+//			}
+			
+// THIS WORKS 04162016 500am
+					for(int k = 0; k < load.get(0).length; k++) {						
+						//System.out.println(load.get(0).length);
+							for(int j = 0; j < load.size(); j++){
+								//System.out.println(j);
+				    	      posted.setString (j+1, load.get(j)[k]); // this inserts array into values(?) of query
+							}
+						posted.addBatch();
+						posted.executeUpdate();
+			    	}
+// end this works 04162016 500am
+			
+			
+			
+//				int k=1;
+//				for(String[] arrayListElement : load){
+//					for (String field : arrayListElement) {
+//					    posted.setString(k, field);					    
+//					}
+//					k++;					
+//				}				
+//				posted.executeUpdate();
+
+				
+//			for (int k = 0; k < load.size()-1; k++) {  
+//	            posted.setObject(1, load.get(k)); // name 
+//	            posted.setObject(2,load.get(k)); // availability  
+//	            posted.addBatch();  
+//	        }  
+//	        posted.executeBatch();
 	    	  
 	    	  //posted.setString(2, var2);
 	    	  
@@ -184,7 +256,7 @@ ImportTxtFile.allColumns
 	public static void main(String[] args) throws Exception{
 		//DbConnect connect = new DbConnect();
 		DbConnect.getConnection();
-		DbConnect.post();
+		//DbConnect.post();
 		
 		//connect.selectData();
 		//connect.insertData("insert into buildings(name,availability) values ('DDD','Y')");
