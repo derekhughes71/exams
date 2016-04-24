@@ -1,74 +1,37 @@
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-
 
 public class ExamsClient {
 		
 		// begin main method
 		 public static void main(String[] args) throws Exception{
 			 
-//	THIS IS USING ImportTxtFile class to import
 
-// 		read in .txt files (rooms.txt, courses.txt, buildings.txt)
-//			 ImportTxtFile importRooms = new ImportTxtFile();
-//			 importRooms.readFile("rooms.txt");
+			 // read in .txt files (rooms.txt, courses.txt, buildings.txt)
+			 ImportTxtFile importRooms = new ImportTxtFile();
+			 importRooms.readFile("rooms.txt");
 			 
-//			 ImportTxtFile importCourses = new ImportTxtFile();
-//			 importCourses.readFile("courses.txt");
-//			 System.out.println(importCourses.allColumns.size());
-			 
+			 ImportTxtFile importCourses = new ImportTxtFile();
+			 importCourses.readFile("courses.txt");
+		 
 			 ImportTxtFile importBuildings = new ImportTxtFile(); // 26 rows and 2 columns for buildings.txt
 			 importBuildings.readFile("buildings.txt"); // insert .txt to read and parse
-			 //System.out.println(importBuildings.allColumns.size());
-			 DbConnect.post(importBuildings.allColumns); // insert columns into table fields in database
-			 
 
-
-			 // Test for proper data being retrieved in arraylist
-//			 for( int i = 0; i <= (importBuildings.allColumns.size() - 1); i++) {
-//				   String[] us = importBuildings.allColumns.get( i );
-//				  
-//				   for(int j=0; j < us.length; j++)
-//					{
-//						System.out.println("This is row"+j+" of array #"+i+": "+us[j]);
-//					}				   
-//			 }
 			 
-			 //importBuildings.insertColumn(); 		 
+			 // Send all columns from all text files to be separated into the database tables
+			 ProcessToDb process = new ProcessToDb(importCourses.allColumns, importRooms.allColumns, importBuildings.allColumns);
 			 
-			 
-			 // parse .txt files into tables using arrays
-	
-			 
-//	 	THIS IS USING ReadFile class to import
-//		String file_name = "buildings.txt";
-//			 
-//		 try{
-//			 ReadFile file = new ReadFile(file_name);
-//			 String[] aryLines = file.OpenFile();
-//			 
-//			 int i;
-//			 for(i=0; i< aryLines.length; i++){
-//				 System.out.println(aryLines[i]);
-//			 }
-//		 }
-//		catch (IOException e){
-//			System.out.println(e.getMessage());		
-//		}
-//			
-		 
-//		 ReadFile file = new ReadFile("buildings.txt");
-//		 file.OpenFile();
-//		 file.readLines();
+			 //Insert department table data
+			 String insertStmt2 = "INSERT into DEPARTMENT (department_ID, department_Name) VALUES (?,?)";
+			 process.process("department", insertStmt2);
+    		 // Insert teacher table data
+			 String insertStmt3 = "INSERT into teacher (teacher_ID, teacher_Name, proctor_Avail_Days) VALUES (?,?,?)";
+			 process.process("teacher", insertStmt3);
+			// Insert course table data
+			 String insertStmt = "INSERT into COURSE (call_Number, course_Number, course_Room_Num, course_Building_Name, course_Meeting_Days, course_Start_Time, course_End_Time, comp_Based_Exam, department_ID) VALUES (?,?,?,?,?,?,?,?,?)";
+			 process.process("course", insertStmt); // constructor for insertStmt and table to process
 			 
 			 
-	
-		 
 			 
 	} // - end main class
-			
+
 
 } // - end ExamsClient class
