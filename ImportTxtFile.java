@@ -1,3 +1,9 @@
+// MSIS Capstone 498 - Spring 2016 - Northwestern University - Team 4
+// 04-25-2016
+
+// ImportTxtFile reads in a .txt file, parses it into associated rows and columns,
+// then creates an ArrayList of the columns based on the related .txt file
+
 import java.io.*;
 import java.util.ArrayList;
 

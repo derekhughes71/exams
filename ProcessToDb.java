@@ -1,3 +1,11 @@
+// MSIS Capstone 498 - Spring 2016 - Northwestern University - Team 4
+// 04-25-2016
+
+// ProcessToDb class takes the parsed into columns and rows .txt file ArrayLists 
+// from each .txt file and, based on a passed insert statement and table identification,
+// process them based on their table structure order, then use DbConnect class to 
+// post() the ArrayLists into the MySql database
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -7,9 +15,10 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-
+// this class properly arranges each 
 public class ProcessToDb {
 	
+	// ArrayLists for courses, rooms, buildings
 	ArrayList<String[]> courses;
 	ArrayList<String[]> rooms;
 	ArrayList<String[]> buildings;
@@ -23,7 +32,7 @@ public class ProcessToDb {
 	}
 	
 	
-// process method()
+	// process method()
 	public void process(String table, String stmt) throws Exception{
 		
 		String name = table;
@@ -62,88 +71,91 @@ public class ProcessToDb {
 
 		
 
-// course table section 
+	// course table section 
 		
- if(name.equalsIgnoreCase("course")){
-	 
-	 // remove all null values from each array 
-	 String[] call_Number = new String[courses.get(0).length-1];
-	 String[] course_Number = new String[courses.get(0).length-1];
-	 String[] course_Room_number = new String[courses.get(0).length-1];
-	 String[] course_Building_Name = new String[courses.get(0).length-1];
-	 String[] course_Meeting_Days = new String[courses.get(0).length-1];
-	 String[] course_Start_Time = new String[courses.get(0).length-1];
-	 String[] course_End_Time = new String[courses.get(0).length-1];
-	 String[] comp_Based_Exam = new String[courses.get(0).length-1];
-	 String[] department_ID = new String[courses.get(0).length-1];
-	 
-	 for(int i=1; i < courses.get(0).length; i++){
-		 call_Number[i-1]= courses.get(2)[i];
-		 course_Number[i-1]= courses.get(0)[i];
-		 course_Room_number[i-1]= courses.get(6)[i];
-		 course_Building_Name[i-1]= courses.get(7)[i];
-		 course_Meeting_Days[i-1]= courses.get(3)[i];
-		 course_Start_Time[i-1]= startTime[i];
-		 course_End_Time[i-1]= endTime[i];
-		 comp_Based_Exam[i-1]= courses.get(10)[i];
-		 department_ID[i-1]= courses.get(1)[i];		 
-	 }
-	 
-	 // get departmentName and convert to department_ID by using
-	 // SELECT statement from department TABLE to choose ID related to dept Name
-	 
-// THIS WILL WORK 04222016 2046pm
-//		 String query = "SELECT department_ID from department where department_Name ='"+department_ID[0]+"'";
-//		 rs = selectSt.executeQuery(query);
-//		 while (rs.next()){
-//			 rs.getInt("department_ID");
-//         		     System.out.println("Iteration: "+i+" -DeptNAME:"+department_ID[i]+" -DeptID: "+Integer.toString(rs.getInt("department_ID")));
-//		 }
-	 
-	 
-	 // select/add dept_ID and convert comp_Based_Exam from Y/N to 1/0
-	 String[] deptID = new String[department_ID.length];
-	 
-	 for(int i=0; i < department_ID.length; i++){
-		 String query = "SELECT department_ID from department where department_Name ='"+department_ID[i]+"'";
-		 rs = selectSt.executeQuery(query);
+	if(name.equalsIgnoreCase("course")){
 		 
-			 while (rs.next()){
-				 // insert selected ID for dept Name into dept_ID
-				 deptID[i] = Integer.toString(rs.getInt("department_ID"));
-		     //System.out.println("Iteration: "+i+" -DeptNAME:"+department_ID[i]+" -DeptID: "+deptID[i]);
-			 }
+		 // remove all null values from each array 
+		 String[] call_Number = new String[courses.get(0).length-1];
+		 String[] course_Number = new String[courses.get(0).length-1];
+		 String[] course_Room_number = new String[courses.get(0).length-1];
+		 String[] course_Building_Name = new String[courses.get(0).length-1];
+		 String[] course_Meeting_Days = new String[courses.get(0).length-1];
+		 String[] course_Start_Time = new String[courses.get(0).length-1];
+		 String[] course_End_Time = new String[courses.get(0).length-1];
+		 String[] comp_Based_Exam = new String[courses.get(0).length-1];
+		 String[] department_ID = new String[courses.get(0).length-1];
+		 
+		 // reposition elements in each array to remove the first row of row names
+		 for(int i=1; i < courses.get(0).length; i++){
+			 call_Number[i-1]= courses.get(2)[i];
+			 course_Number[i-1]= courses.get(0)[i];
+			 course_Room_number[i-1]= courses.get(6)[i];
+			 course_Building_Name[i-1]= courses.get(7)[i];
+			 course_Meeting_Days[i-1]= courses.get(3)[i];
+			 course_Start_Time[i-1]= startTime[i];
+			 course_End_Time[i-1]= endTime[i];
+			 comp_Based_Exam[i-1]= courses.get(10)[i];
+			 department_ID[i-1]= courses.get(1)[i];		 
+		 }
+		 
+		 // get departmentName and convert to department_ID by using
+		 // SELECT statement from department TABLE to choose ID related to dept Name
+		 
+	// THIS WILL WORK 04222016 2046pm
+	//		 String query = "SELECT department_ID from department where department_Name ='"+department_ID[0]+"'";
+	//		 rs = selectSt.executeQuery(query);
+	//		 while (rs.next()){
+	//			 rs.getInt("department_ID");
+	//         		     System.out.println("Iteration: "+i+" -DeptNAME:"+department_ID[i]+" -DeptID: "+Integer.toString(rs.getInt("department_ID")));
+	//		 }
+		 
+		 
+		 // select/add dept_ID field values and convert comp_Based_Exam from Y/N to 1/0
+		 String[] deptID = new String[department_ID.length];
+		 
+		 for(int i=0; i < department_ID.length; i++){
+			 String query = "SELECT department_ID from DEPARTMENT where department_Name ='"+department_ID[i]+"'";
+			 rs = selectSt.executeQuery(query);
 			 
-			 // convert comp_Based_Exam Y and N values to 1 and 0
-			 if(comp_Based_Exam[i].equalsIgnoreCase("Y")){
-				 comp_Based_Exam[i]="1";
-			 } else {
-				 comp_Based_Exam[i]="0";
-			 }
-			 
-	 } // end - for to select/add dept_ID and convert comp_Based_Exam from Y/N to 1/0
-
-     conn.close(); 
-	 
-	 
-	 
- // create arraylist to store course table columns/elements
-		ArrayList<String[]> courseTable = new ArrayList<String[]>();
-		courseTable.add(call_Number); // call_Number
-		courseTable.add(course_Number); // course_Number
-		courseTable.add(course_Room_number); // course_Room_number
-		courseTable.add(course_Building_Name); // course_Building_Name
-		courseTable.add(course_Meeting_Days); // course_Meeting_Days
-		courseTable.add(course_Start_Time); 	 // course_Start_Time
-		courseTable.add(course_End_Time); 		 // course_End_Time
-		courseTable.add(comp_Based_Exam); // comp_Based_Exam
-		courseTable.add(deptID); // department_ID
-		
-		//System.out.println(courseTable.size());
-		String stmnt = stmt;
-		DbConnect.post(courseTable, stmnt);
-
- }  // end course section	
+				 while (rs.next()){
+					 // insert selected ID for dept Name into dept_ID
+					 deptID[i] = Integer.toString(rs.getInt("department_ID"));
+			     //System.out.println("Iteration: "+i+" -DeptNAME:"+department_ID[i]+" -DeptID: "+deptID[i]);
+				 }
+				 
+				 // convert comp_Based_Exam Y and N values to 1 and 0
+				 if(comp_Based_Exam[i].equalsIgnoreCase("Y")){
+					 comp_Based_Exam[i]="1";
+				 } else {
+					 comp_Based_Exam[i]="0";
+				 }
+				 
+		 } // end - for to select/add dept_ID and convert comp_Based_Exam from Y/N to 1/0
+	
+	     conn.close(); 
+		 
+		 
+		 
+	 // create arraylist to store course table columns/elements
+			ArrayList<String[]> courseTable = new ArrayList<String[]>();
+			courseTable.add(call_Number); // call_Number
+			courseTable.add(course_Number); // course_Number
+			courseTable.add(course_Room_number); // course_Room_number
+			courseTable.add(course_Building_Name); // course_Building_Name
+			courseTable.add(course_Meeting_Days); // course_Meeting_Days
+			courseTable.add(course_Start_Time); 	 // course_Start_Time
+			courseTable.add(course_End_Time); 		 // course_End_Time
+			courseTable.add(comp_Based_Exam); // comp_Based_Exam
+			courseTable.add(deptID); // department_ID
+			
+			// use DbConnect class post() method to insert into proper table
+			// based on table name and relevant INSERT statement
+			//System.out.println(courseTable.size());
+			String stmnt = stmt;
+			DbConnect.post(courseTable, stmnt);
+	
+	 }  // end course section	
 		
 		
 
@@ -167,6 +179,8 @@ public class ProcessToDb {
 			// create ID numbers for each department
 			String[] departmentID = new String[department.length];
 			
+			// create an ID column of null values so auto-increment function works when
+			// passed to MySql database
 			for(int id = 1; id < department.length; id++){
 				//departmentID[id] = Integer.toString(id);
 				departmentID[id] = null;
@@ -179,6 +193,8 @@ public class ProcessToDb {
 		departmentTable.add(department); // department ID
 		//System.out.println(departmentTable.size());
 				
+		// use DbConnect class post() method to insert into proper table
+		// based on table name and relevant INSERT statement
 		String stmnt2 = stmt;
 		DbConnect.post(departmentTable, stmnt2);
 		
@@ -210,6 +226,7 @@ public class ProcessToDb {
 			arrayAvail[i]= arrayAvailNull[i+1];
 			//System.out.println(i+"ArrayName: "+arrayName[i]+" - ArrayAvail: "+arrayAvail[i]);			
 		} // end - for remove null value
+		
 		
 		// change all "ALL" strings to 1111110
 		for(int i=0; i< arrayName.length; i++){
@@ -270,12 +287,14 @@ public class ProcessToDb {
 		
 			// create ID numbers for each teacher - THIS SHOWS ARRAY [0] is ABBOTT (yes!)
 					String[] teacherID = new String[combinedUnique.length];
-					
-					for(int id = 0; id < combinedUnique.length; id++){
-						//teacherID[id] = Integer.toString(id);
-						teacherID[id] = null;
-						//System.out.println(id + "- Teacher ID size: " + teacherID.length + "\nTeacher Array size: "+teacherID.length + " - Teacher NAME: "+teacherName[id]);
-					} // end - for teacherID column
+			
+			// create an ID column of null values so auto-increment function works when
+			// passed to MySql database
+			for(int id = 0; id < combinedUnique.length; id++){
+					//teacherID[id] = Integer.toString(id);
+					teacherID[id] = null;
+					//System.out.println(id + "- Teacher ID size: " + teacherID.length + "\nTeacher Array size: "+teacherID.length + " - Teacher NAME: "+teacherName[id]);
+			} // end - for teacherID column
 	
 					
 			// insert into arrayList to insert into teacher table in database
@@ -284,19 +303,13 @@ public class ProcessToDb {
 			teacherTable.add(teacherName); // teacher name
 			teacherTable.add(teacherAvail); // teacher availability
 			
+			// use DbConnect class post() method to insert into proper table
+			// based on table name and relevant INSERT statement
 			String stmnt3 = stmt;
 			DbConnect.post(teacherTable, stmnt3);
 				
 	 }	// end - teachers table section
  
   } // end - method process()
-
-
-//	private PreparedStatement preparedStatement(String query) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
-
 	
 } // end - class ProcessToDb()

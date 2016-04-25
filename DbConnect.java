@@ -1,24 +1,32 @@
-// connect to mysql database
+// MSIS Capstone 498 - Spring 2016 - Northwestern University - Team 4
+// 04-25-2016
+
+// DbConnect class contains the method getConnection() to connect to a database 
+// (either localhost or remote server) and uses post() to accept an appropriate 
+// ArrayList and INSERT statement for a given table to populate the database
+
 import java.sql.*;
 import java.util.ArrayList;
 
 
 public class DbConnect {
 
-	private Statement st;  // to create statements to query db
-	private ResultSet rs; // holds results from queries
-		
+	// this method connects to the database using a localhost or remote server method
 	public static Connection getConnection() throws Exception{
 		
 		try{
 			String driver = "com.mysql.jdbc.Driver";
-//			String url = "jdbc:mysql://localhost:3306/exams";
-//			String username = "root";
-//			String pwd = "";
+			
+			// to connect to localhost MySql database
+			String url = "jdbc:mysql://localhost:3306/exams";
+			String username = "root";
+			String pwd = "";
 
-			String url = "jdbc:mysql://192.249.123.44:3306/kartpa5_exams";
-			String username = "kartpa5_deltau5";
-			String pwd = "deltau!";
+			// to connect to inmotion hosting account
+//			String url = "jdbc:mysql://192.249.123.44:3306/kartpa5_exams";
+//			String username = "kartpa5_deltau5";
+//			String pwd = "deltau!";
+			
 			Class.forName(driver);
 			
 			Connection conn = DriverManager.getConnection(url, username, pwd);
@@ -29,15 +37,11 @@ public class DbConnect {
 			System.out.println(e);			
 		}
 		return null;
-	}
-
-//	public static void main(String[] a) throws Exception {
-//		  DbConnect.getConnection();			 
-//	}
-	
+	} // end - getConnection() 
 
 	
-	
+	// post() accepts arraylist of the table values and the specific insert statement
+	// method inserts parsed and separated values from .txt file into appropriate table
 	public static void post(ArrayList<String[]> list, String stmt) throws Exception{
 		
 		// ArrayList of properly assorted String[] of columns to insert into relevant table
@@ -46,9 +50,10 @@ public class DbConnect {
 		String insertStatement = stmt;
 		
 		try{
+			// use getConnection() method to create a connection
 			Connection con = getConnection();
-			PreparedStatement posted = con.prepareStatement(insertStatement);
-			
+			// holds INSERT statement to use in element inserting for loop (below)
+			PreparedStatement posted = con.prepareStatement(insertStatement);			
 			
 				// Insert each element from each String from ArrayList into relevant DB table 
 				for(int k = 0; k < load.get(0).length; k++) {						
@@ -60,16 +65,18 @@ public class DbConnect {
 						}
 					posted.addBatch();
 					posted.executeUpdate();
-			    }
+			    } // end for() to insert each element into table
 	    	  
 		} catch(Exception e){
 			System.out.println(e);
 		} finally {
 			System.out.println("Insert Completed:");
-		}
+		} // end - try/finally
 		
-	}
+	} // end - post()
 	
+
+// commented out section holds various query methods that may be used in future	
 	
 //	// select records from DB and print them out
 //		public void selectData(){
