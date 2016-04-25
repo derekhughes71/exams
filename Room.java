@@ -6,10 +6,13 @@ public class Room {
     boolean computerized;
     int capacity;
     String maintenanceDay;
-    int maintenanceStartTime;
-    int maintenanceEndTime;
+    int maintenanceStartTime;  
+    int maintenanceEndTime;    
+    Section[][] timeSlots;     // array of all possible exam timeslots, which will store a scheduled exam object
 
-    public Room(String buildingCodeIn, String roomNumberIn, boolean computerizedIn, int capacityIn, String maintenanceDayIn, int maintenanceStartTimeIn, int maintenanceEndTimeIn) {
+    public Room(String buildingCodeIn, String roomNumberIn, boolean computerizedIn, int capacityIn, String maintenanceDayIn, 
+                int maintenanceStartTimeIn, int maintenanceEndTimeIn, boolean weekendOk) {
+        
         buildingCode = buildingCodeIn;
         roomNumber = roomNumberIn;
         computerized = computerizedIn;
@@ -17,6 +20,14 @@ public class Room {
         maintenanceDay = maintenanceDayIn;
         maintenanceStartTime = maintenanceStartTimeIn;
         maintenanceEndTime = maintenanceEndTimeIn;
+       
+        if(weekendOk){
+            //room is available on Saturday, so we'll need 5 days x 5 timeslots
+            timeSlots= new Section[5][5];
+        }else{
+            //room is not available on Saturday, so we'll only need 4 days x 5 timeslots
+            timeSlots= new Section[4][5];
+        }
     }
 
     public String getBuildingCode() {
@@ -25,14 +36,6 @@ public class Room {
 
     public void setBuildingCode(String buildingCodeIn) {
         buildingCode = buildingCodeIn;
-    }
-    
-    public String getBuilding() {
-        return building;
-    }
-
-    public void setBuilding(String buildingIn) {
-        building = buildingIn;
     }
 
     public String getRoomNumber() {
@@ -81,7 +84,19 @@ public class Room {
 
     public void setMaintenanceEndTime(int maintenanceEndTimeIn) {
         maintenanceEndTime = maintenanceEndTimeIn;
+    }   
+    
+    public void scheduleExam(Section courseSection, int day, int timeslot){
+        if(courseSection!=null && day>=0 && day<5 && timeslot>=0 && timeslot<5){
+            timeSlots[day][timeslot] = courseSection;
+        }
     }
     
-    
+    public Section getScheduledSection(int day, int timeslot){
+        if(day>=0 && day<5 && timeslot>=0 && timeslot<5){
+            return timeSlots[day][timeslot];
+        }else{
+            return null;
+        }
+    }
 }

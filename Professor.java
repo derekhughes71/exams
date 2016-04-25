@@ -17,7 +17,7 @@ public class Professor {
     }
 
     public void setProfessorId(int professorIdIn) {
-        professorId = professorId;
+        professorId = professorIdIn;
     }
 
     public String getFullName() {
@@ -25,7 +25,7 @@ public class Professor {
     }
 
     public void setFullName(String fullNameIn) {
-        fullName = fullName;
+        fullName = fullNameIn;
     }
 
     public String getDepartment() {
@@ -33,7 +33,7 @@ public class Professor {
     }
 
     public void setDepartment(String departmentIn) {
-        department = department;
+        department = departmentIn;
     }
 
     public String getAvailability() {
@@ -41,6 +41,6 @@ public class Professor {
     }
 
     public void setAvailability(String availabilityIn) {
-        availability = availability;
+        availability = availabilityIn;
     }
 }
