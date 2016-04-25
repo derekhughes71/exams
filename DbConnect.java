@@ -12,12 +12,13 @@ public class DbConnect {
 		
 		try{
 			String driver = "com.mysql.jdbc.Driver";
-			String url = "jdbc:mysql://localhost:3306/exams";
-			String username = "root";
-			String pwd = "";
-//			String url = "jdbc:mysql://www.greenspeedreader.com:3306/kartpa5_gsr";
-//			String username = "kartpa5_twoputt";
-//			String pwd = "I_luv2_putt";
+//			String url = "jdbc:mysql://localhost:3306/exams";
+//			String username = "root";
+//			String pwd = "";
+
+			String url = "jdbc:mysql://192.249.123.44:3306/kartpa5_exams";
+			String username = "kartpa5_deltau5";
+			String pwd = "deltau!";
 			Class.forName(driver);
 			
 			Connection conn = DriverManager.getConnection(url, username, pwd);
@@ -30,7 +31,9 @@ public class DbConnect {
 		return null;
 	}
 
-	
+//	public static void main(String[] a) throws Exception {
+//		  DbConnect.getConnection();			 
+//	}
 	
 
 	
