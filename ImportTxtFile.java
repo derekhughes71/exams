@@ -18,7 +18,9 @@ public class ImportTxtFile {
     int linenumber = 0;
     int numberOfCols;
     
-	
+	// readFile() reads .txt file into an object, that object is then parsed by | delimiter
+    // into a matrix like 2D array, the 2D array is separated into columns which are 
+    // stored in allColumns ArrayList
 	public void readFile(String file) throws IOException {
 		        
 		// The name of the file to open.
@@ -28,24 +30,22 @@ public class ImportTxtFile {
         FileReader fileReaderLine = new FileReader(fileName);        
 
         
+        
         // count number lines in file - need to use separate BufferedReader
-    	LineNumberReader lnr = new LineNumberReader(fileReaderLine);    		    
-    	        		    
+    	LineNumberReader lnr = new LineNumberReader(fileReaderLine);    	        		    
     	        while (lnr.readLine() != null){
     	        	linenumber++;
-    	        }
- 	 
+    	        } 	 
     	lnr.close();
     	// end - count number of lines
     	            
     	            
     	    
     	// FileReader reads text files in the default encoding.
-    	    FileReader fileReader = new FileReader(fileName);
+    	FileReader fileReader = new FileReader(fileName);
             
         // Always wrap FileReader in BufferedReader.
-        BufferedReader bufferedReader = 
-                new BufferedReader(fileReader);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
             
         // to write results to a string
         StringBuffer fileContents = new StringBuffer();
@@ -57,15 +57,16 @@ public class ImportTxtFile {
         String[] parse = line.split("\\|");
 		numberOfCols = parse.length;        		    
 		    
+		// create new array objects based on column and row numbers
 		matrix = new String[linenumber][numberOfCols]; // X x X matrix of parsed text file
 		parseByRows = new String[linenumber]; // hold each line in a separate dimension of an array
 		nameCol = new String[linenumber]; // separated columns from matrix
 		allColumns = new ArrayList<String[]>(); // arraylist of columns from each file
 		    
+		
 		// counters to iterate into 2d array (matrix)
-        int i = 0;
-            
-        // separate data into a matrix by [rows][columns]
+        int i = 0;            
+        // separate data into a matrix by [rows][columns] using 2D array
         while(line != null) {
                 
             	// Insert line into an array (parseByRows[])
@@ -92,6 +93,7 @@ public class ImportTxtFile {
 		        	
             	} // - end if
             	
+            // skip to next line at \n then read next line into line String
             fileContents.append(line).append("\n");
 		    line = bufferedReader.readLine();		      
 		       	        
@@ -101,31 +103,31 @@ public class ImportTxtFile {
 		 } // - end while loop
             
             
-            // Always close files.
-            bufferedReader.close(); 
+          // Always close files.
+          bufferedReader.close(); 
             
             
-            // put each column from matrix into own column            
-            for(int k1=0; k1<=(numberOfCols-1); k1++){
+          // put each column from matrix into own column            
+          for(int k1=0; k1<=(numberOfCols-1); k1++){
 		            
-            		// i1=1 so doesn't include column name in array            		
-            		for(int i1=1; i1<=(linenumber-1); i1++){ 
+            	// i1=1 so doesn't include column name in array            		
+            	for(int i1=1; i1<=(linenumber-1); i1++){ 
 		            	
-		            	// puts every row from this column into its own array and prints out row value   
-		            	nameCol[i1]= matrix[i1][k1];
-		            	//System.out.println(nameCol[i1]);
+		            // puts every row from this column into its own array and prints out row value   
+		            nameCol[i1]= matrix[i1][k1];
+		            //System.out.println(nameCol[i1]);
 		            	 	 
-		            } // - end for 
+            	} // - end for 
 		         
-		         // insert each separated column into arraylist		         
-		         allColumns.add(nameCol);
+            	// insert each separated column into arraylist		         
+            	allColumns.add(nameCol);
 		         
-		         // clear nameCol so can receive another set of values
-		         nameCol = new String[linenumber];
+            	// clear nameCol so can receive another set of values
+            	nameCol = new String[linenumber];
 			
-		         // System.out.println(Arrays.toString(allColumns.get(k1)));
+            	// System.out.println(Arrays.toString(allColumns.get(k1)));
 
-            } // - end for
+           } // - end for
              
  }   // - end readFile()                     
    	
