@@ -1,6 +1,7 @@
 package cis498;
 
-public class Room {
+@SuppressWarnings("rawtypes")
+public class Room implements Comparable {
     String buildingCode;
     String roomNumber;
     boolean computerized;
@@ -99,4 +100,20 @@ public class Room {
             return null;
         }
     }
+
+	@Override
+	public int compareTo(Object o) {
+		int compareCapacity=((Room)o).getCapacity();
+        /* For Ascending order*/
+        //return this.capacity-compareCapacity;
+
+        /* For Descending order do like this */
+        return compareCapacity-this.capacity;
+	}
+	
+    @Override
+    public String toString() {
+        return "Room number=" + roomNumber +" | Building=" + buildingCode +  " | Capacity=" + capacity;
+    }    
+    
 }

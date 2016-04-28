@@ -1,6 +1,8 @@
 package cis498;
 
-public class Section {
+
+@SuppressWarnings("rawtypes")
+public class Section implements Comparable {
  //course section attributes
  int callNumber; //12941
  Professor instructor;
@@ -12,6 +14,7 @@ public class Section {
  int endTime;
  int enrolled;
  boolean computerFinal;
+ String bucket;
  
  //final exam attributes
  Professor examProctor;
@@ -118,6 +121,27 @@ public class Section {
         this.examProctor = examProctor;
     }
 
+    public String getBucket() {
+        return bucket;
+    }
+
+    public void setBucket(String bucket) {
+        this.bucket = bucket;
+    }
     
+    @Override
+	public int compareTo(Object o) {
+		int compareStart=((Section)o).getStartTime();
+        /* For Ascending order*/
+        return this.startTime-compareStart;
+
+        /* For Descending order do like this */
+        //return compareage-this.studentage;
+	}
+
+    @Override
+    public String toString() {
+        return "Course Time=" + startTime +"-" + endTime +  "| Call Number=" + callNumber+"| Number enrolled="+enrolled+"| Days="+offeredDays+"| Bucket="+bucket;
+    }    
     
 }
