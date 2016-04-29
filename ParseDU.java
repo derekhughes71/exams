@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class ParseDU {
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "null" })
 	public static void main(String[] args) throws FileNotFoundException, IOException{
         String courseData, roomData, buildingData;
         courseData = "sunnaData/courses.txt";
@@ -208,7 +208,7 @@ public class ParseDU {
         		str.setBucket("K");
         	if(str.getStartTime()>= 1000 && str.getStartTime()<= 1030 && str.getOfferedDays().equals("01010"))
         		str.setBucket("L");
-        	if(str.getStartTime()== 1100 && str.getOfferedDays().equals("01010"))
+        	if(str.getStartTime()>= 1100 && str.getStartTime()<= 1130  && str.getOfferedDays().equals("01010"))
         		str.setBucket("M");
         	if(str.getStartTime()== 1200 && str.getOfferedDays().equals("01010"))
         		str.setBucket("N");
@@ -224,14 +224,97 @@ public class ParseDU {
         	System.out.println(str);
         }
         
-        System.out.println("\nBucket A courses:");
+        
+        // ARRAYLIST of Arraylists of courses in each bucket
+        // create arraylist of courses for each bucket, store these bucket arraylists into
+        // a master arraylist
+        ArrayList<ArrayList> bucketList= new ArrayList<ArrayList>(); 
+        ArrayList<Section> bucketA =  new ArrayList<Section>();
+        ArrayList<Section> bucketB =  new ArrayList<Section>();
+        ArrayList<Section> bucketC =  new ArrayList<Section>();
+        ArrayList<Section> bucketD =  new ArrayList<Section>();
+        ArrayList<Section> bucketE =  new ArrayList<Section>();
+        ArrayList<Section> bucketF =  new ArrayList<Section>();
+        ArrayList<Section> bucketG =  new ArrayList<Section>();
+        ArrayList<Section> bucketH =  new ArrayList<Section>();
+        ArrayList<Section> bucketI =  new ArrayList<Section>();
+        ArrayList<Section> bucketJ =  new ArrayList<Section>();
+        ArrayList<Section> bucketK =  new ArrayList<Section>();
+        ArrayList<Section> bucketL =  new ArrayList<Section>();
+        ArrayList<Section> bucketM =  new ArrayList<Section>();
+        ArrayList<Section> bucketN =  new ArrayList<Section>();
+        ArrayList<Section> bucketO =  new ArrayList<Section>();
+        ArrayList<Section> bucketP =  new ArrayList<Section>();
+        ArrayList<Section> bucketQ =  new ArrayList<Section>();
+        ArrayList<Section> bucketR =  new ArrayList<Section>();        
+        
+        System.out.println("\nBucket ArrayList of courses in each bucket: \n");
         
         // get list of courses in specific bucket
         for(Section str: courseList){
         	if(str.getBucket().equalsIgnoreCase("A"))
-        		System.out.println(str);
+        		bucketA.add(str); // add to A arraylist
+        	if(str.getBucket().equalsIgnoreCase("B"))
+        		bucketB.add(str); // add to B arraylist
+        	if(str.getBucket().equalsIgnoreCase("C"))
+        		bucketC.add(str); // add to C arraylist
+        	if(str.getBucket().equalsIgnoreCase("D"))
+        		bucketD.add(str); // add to D arraylist
+        	if(str.getBucket().equalsIgnoreCase("E"))
+        		bucketE.add(str); // add to E arraylist
+        	if(str.getBucket().equalsIgnoreCase("F"))
+        		bucketF.add(str); // add to F arraylist
+        	if(str.getBucket().equalsIgnoreCase("G"))
+        		bucketG.add(str); // add to G arraylist
+        	if(str.getBucket().equalsIgnoreCase("H"))
+        		bucketH.add(str); // add to H arraylist
+        	if(str.getBucket().equalsIgnoreCase("I"))
+        		bucketI.add(str); // add to I arraylist
+        	if(str.getBucket().equalsIgnoreCase("J"))
+        		bucketJ.add(str); // add to J arraylist
+        	if(str.getBucket().equalsIgnoreCase("K"))
+        		bucketK.add(str); // add to K arraylist
+        	if(str.getBucket().equalsIgnoreCase("L"))
+        		bucketL.add(str); // add to L arraylist
+        	if(str.getBucket().equalsIgnoreCase("M"))
+        		bucketM.add(str); // add to M arraylist
+        	if(str.getBucket().equalsIgnoreCase("N"))
+        		bucketN.add(str); // add to N arraylist
+        	if(str.getBucket().equalsIgnoreCase("O"))
+        		bucketO.add(str); // add to O arraylist
+        	if(str.getBucket().equalsIgnoreCase("P"))
+        		bucketP.add(str); // add to P arraylist
+        	if(str.getBucket().equalsIgnoreCase("Q"))
+        		bucketQ.add(str); // add to Q arraylist
+        	if(str.getBucket().equalsIgnoreCase("R"))
+        		bucketR.add(str); // add to R arraylist
         }
         
+        // Add courses in each bucket to bucketList ArrayList
+        bucketList.add(bucketA);
+        bucketList.add(bucketB);
+        bucketList.add(bucketC);
+        bucketList.add(bucketD);
+        bucketList.add(bucketE);
+        bucketList.add(bucketF);
+        bucketList.add(bucketG);
+        bucketList.add(bucketH);
+        bucketList.add(bucketI);
+        bucketList.add(bucketJ);
+        bucketList.add(bucketK);
+        bucketList.add(bucketL);
+        bucketList.add(bucketM);
+        bucketList.add(bucketN);
+        bucketList.add(bucketO);
+        bucketList.add(bucketP);
+        bucketList.add(bucketQ);
+        bucketList.add(bucketR);
+        
+        // print out courses in each bucket and the bucket size for verification/accuracy
+        for(ArrayList bucket: bucketList){
+        	System.out.println(bucket.toString()); 
+        	System.out.println("Bucket size: "+bucket.size()+"\n");
+        }
 //        
 //      // SORTING course/section by start times
 //      int[] order = new int[courseList.size()]; // to track order of sorting     
