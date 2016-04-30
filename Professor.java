@@ -5,12 +5,13 @@ public class Professor {
     String fullName;
     String department;
     String availability;
-    Professor[][] timeSlots; // 5x5 represents when professor assigned to an exam
+    Room[][] timeSlots;
 
     public Professor(String fullNameIn, String departmentIn, String availabilityIn) {
         fullName = fullNameIn;
         department = departmentIn;
-        availability = availabilityIn;
+        setAvailability(availabilityIn);
+        timeSlots = new Room[5][5];
     }
     
     public int getProfessorId() {
@@ -37,11 +38,33 @@ public class Professor {
         department = departmentIn;
     }
 
-    public String getAvailability() {
-        return availability;
+    private void setAvailability(String availabilityIn) {
+        if(availabilityIn.equals("ALL")){
+            availability = "11111";
+        }else{
+            availability = availabilityIn.substring(availabilityIn.length() - 5);
+        }
     }
-
-    public void setAvailability(String availabilityIn) {
-        availability = availabilityIn;
+    
+    public boolean professorFree(int day, int timeslot){
+        if(day<5 && day>=0 && timeslot>=0 && timeslot <5){
+            return availability.charAt(day)=='1' && 
+                getScheduledRoom(day, timeslot)==null && 
+                (timeslot>0 ? getScheduledRoom(day, timeslot-1)==null : true) && 
+                (timeslot<4 ? getScheduledRoom(day, timeslot+1)==null : true);
+        }else{
+            System.out.println("Invalid day/timeslot provided: "+ day + ", " + timeslot);
+            return false;
+        }
+    }
+    
+    public void scheduleRoom(Room classroom, int day, int timeslot){
+        if(classroom!=null && day>=0 && day<5 && timeslot>=0 && timeslot<5){
+            timeSlots[day][timeslot] = classroom;
+        }
+    }
+    
+    public Room getScheduledRoom(int day, int timeslot){
+        return timeSlots[day][timeslot];
     }
 }

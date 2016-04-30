@@ -1,6 +1,5 @@
 package cis498;
 
-
 @SuppressWarnings("rawtypes")
 public class Section implements Comparable {
  //course section attributes
@@ -10,11 +9,11 @@ public class Section implements Comparable {
  String department; //Ex: CIS
  int courseNumber; //Ex: 498
  String offeredDays;
+ String bucket;
  int startTime;
  int endTime;
  int enrolled;
  boolean computerFinal;
- String bucket;
  
  //final exam attributes
  Professor examProctor;
@@ -31,6 +30,14 @@ public class Section implements Comparable {
         this.endTime = endTime;
         this.enrolled = enrolled;
         this.computerFinal = computerFinal;
+    }
+    
+    public String getBucket() {
+        return bucket;
+    }
+
+    public void setBucket(String bucketIn) {
+        bucket = bucketIn;
     }
 
     public int getCallNumber() {
@@ -121,27 +128,20 @@ public class Section implements Comparable {
         this.examProctor = examProctor;
     }
 
-    public String getBucket() {
-        return bucket;
-    }
-
-    public void setBucket(String bucket) {
-        this.bucket = bucket;
-    }
-    
     @Override
 	public int compareTo(Object o) {
-		int compareStart=((Section)o).getStartTime();
-        /* For Ascending order*/
-        return this.startTime-compareStart;
+            int compareStart=((Section)o).getStartTime();
+            /* For Ascending order*/
+            return this.startTime-compareStart;
 
-        /* For Descending order do like this */
-        //return compareage-this.studentage;
+            /* For Descending order do like this */
+            //return compareage-this.studentage;
 	}
 
     @Override
     public String toString() {
-        return "Course Time=" + startTime +"-" + endTime +  "| Call Number=" + callNumber+"| Number enrolled="+enrolled+"| Days="+offeredDays+"| Bucket="+bucket;
-    }    
+        return "Course Time=" + startTime + "-" + endTime +  "| Call Number=" + callNumber+"| Number enrolled="+enrolled+"| Days="+offeredDays+"| Bucket="+bucket;
+    }  
+    
     
 }

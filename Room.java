@@ -87,6 +87,28 @@ public class Room implements Comparable {
         maintenanceEndTime = maintenanceEndTimeIn;
     }   
     
+    private int getTimeslotStart(int timeslot){
+        switch (timeslot) {
+            case 0: return 800;
+            case 1: return 1000;
+            case 2: return 1200;
+            case 3: return 1400;
+            case 4: return 1600;
+            default: return -1;
+        }
+    }
+    
+    private int getTimeslotEnd(int timeslot){
+        switch (timeslot) {
+            case 0: return 930;
+            case 1: return 1130;
+            case 2: return 1330;
+            case 3: return 1530;
+            case 4: return 1730;
+            default: return -1;
+        }
+    }
+    
     public void scheduleExam(Section courseSection, int day, int timeslot){
         if(courseSection!=null && day>=0 && day<5 && timeslot>=0 && timeslot<5){
             timeSlots[day][timeslot] = courseSection;
@@ -100,20 +122,38 @@ public class Room implements Comparable {
             return null;
         }
     }
-
-	@Override
-	public int compareTo(Object o) {
-		int compareCapacity=((Room)o).getCapacity();
+    
+    final String[] days = {"Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    
+    public boolean roomFree(int day, int timeslot){
+        return getScheduledSection(day, timeslot)==null && 
+                (!days[day].equals(getMaintenanceDay()) || 
+                (getTimeslotStart(timeslot)>getMaintenanceEndTime() || 
+                getTimeslotEnd(timeslot)<getMaintenanceStartTime()));
+    }
+    
+    public int compareTo(Object o) {
+        int compareCapacity=((Room)o).getCapacity();
         /* For Ascending order*/
         //return this.capacity-compareCapacity;
 
         /* For Descending order do like this */
         return compareCapacity-this.capacity;
 	}
+    
+    public String printSchedule() {
+        String out = buildingCode + roomNumber + " Call numbers:\n";
+        for(int i=0;i<timeSlots.length;i++){
+            for(int j=0;j<timeSlots[i].length;j++){
+                out = out + (j>0 ? "\t" : "") + (timeSlots[i][j]==null ? "____" : timeSlots[i][j].getCallNumber());
+            }
+            out = out + "\n";
+        }
+        return out;
+    }
 	
     @Override
     public String toString() {
         return "Room number=" + roomNumber +" | Building=" + buildingCode +  " | Capacity=" + capacity;
     }    
-    
 }
