@@ -5,6 +5,7 @@ public class Professor {
     String fullName;
     String department;
     String availability;
+    Professor[][] timeSlots; // 5x5 represents when professor assigned to an exam
 
     public Professor(String fullNameIn, String departmentIn, String availabilityIn) {
         fullName = fullNameIn;
