@@ -9,16 +9,16 @@ import java.util.Set;
 
 public class ParseDU {
 
-    @SuppressWarnings({ "unchecked", "null" })
+    @SuppressWarnings({ "unchecked"})
 	public static void main(String[] args) throws FileNotFoundException, IOException{
         String courseData, roomData, buildingData;
         courseData = "sunnaData/courses.txt";
         roomData = "sunnaData/rooms.txt";
         buildingData = "sunnaData/buildings.txt";
                 
-        ArrayList<Section> courseList = new ArrayList();
-        ArrayList<Room> roomList = new ArrayList();
-        ArrayList<Professor> professorList = new ArrayList();
+        ArrayList<Section> courseList = new ArrayList<Section>();
+        ArrayList<Room> roomList = new ArrayList<Room>();
+        ArrayList<Professor> professorList = new ArrayList<Professor>();
         
         //using sets to easily create unique ArrayLists of these objects
         Set<String> weekendBuildings = new HashSet<>(); //contains only those buildings which are available on the weekend
@@ -70,11 +70,11 @@ public class ParseDU {
         // sort room (roomList) by capacity (largest to smallest)
         Collections.sort(roomList); 
         
-        System.out.println("\nRooms with capacity largest to smallest:");
+        //System.out.println("\nRooms with capacity largest to smallest:");
         
         // print out descending capacity levels per override toString() in Room class
         for(Room str: roomList){
-			System.out.println(str);
+			//System.out.println(str);
 	   }
  
         
@@ -111,6 +111,11 @@ public class ParseDU {
                 }
 	    line = input.readLine();
 	}
+        
+//        for(Professor str: professorList){
+//			System.out.println(str.getFullName().toString());
+//	   }
+//        System.out.println(professorList.get(0).getFullName().toString());
         
         
         //COURSE SECTION DATA
@@ -221,7 +226,7 @@ public class ParseDU {
         	if(str.getStartTime()>= 1630 && str.getOfferedDays().equals("01010"))
         		str.setBucket("R");           	
         	
-        	System.out.println(str);
+        	//System.out.println(str);
         }
         
         
@@ -310,41 +315,19 @@ public class ParseDU {
         bucketList.add(bucketQ);
         bucketList.add(bucketR);
         
-        // print out courses in each bucket and the bucket size for verification/accuracy
-        for(ArrayList bucket: bucketList){
-        	System.out.println(bucket.toString()); 
-        	System.out.println("Bucket size: "+bucket.size()+"\n");
-        }
-//        
-//      // SORTING course/section by start times
-//      int[] order = new int[courseList.size()]; // to track order of sorting     
-//      int[] startOrder = new int[courseList.size()]; // to hold sorted order of startTime values  
-//      
-//        for(int i=0; i<courseList.size();i++){
-//        	startOrder[i] = courseList.get(i).getStartTime();
-//        	//System.out.println(courseList.get(i).getStartTime());
-//        }
-//        
-//        for (int i = 0; i < startOrder.length - 1; i++)
-//        {
-//            int index = i;
-//            for (int j = i + 1; j < startOrder.length; j++)
-//                if (startOrder[j] < startOrder[index]) 
-//                    index = j;
-//      
-//            int smallerNumber = startOrder[index];  
-//            startOrder[index] = startOrder[i];
-//            startOrder[i] = smallerNumber;
-//            order[i] = index;
-//        }
-//        
-////        MySelectionSort.doSelectionSort(startOrder);
-//        for(int i:order){
-//            System.out.println(i);
-//        }
-//        
-//            System.out.println(startOrder.length+ " : "+order.length);
-//        
+        
+//        // Example code to remove specific Section from the bucketList or from
+//        // a particular bucket
+//        for(int i=0; i<bucketList.size(); i++){ // bucket element of bucketList
+//        	ArrayList bucket = bucketList.get(i);
+//	        	for(int j=0; j<bucket.size(); j++){ // section of each bucket of bucketList
+//	        		Section course = (Section) bucket.get(j);
+//		        		if(course.getCallNumber()==12807) // find call number in se
+//		        			bucket.remove(j);   // if found, remove that section from that bucket    			
+//	        	}
+//        } // end for - remove specific Section
+       
+      
         
 //    System.out.println("Courses inputted: " + courseList.size());
 //    System.out.println("Professors inputted: " + professorList.size());
