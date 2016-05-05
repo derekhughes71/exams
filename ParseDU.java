@@ -5,20 +5,22 @@ import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+import static java.lang.Integer.parseInt;
 
 public class ParseDU {
 
-    @SuppressWarnings({ "unchecked"})
-	public static void main(String[] args) throws FileNotFoundException, IOException{
+    @SuppressWarnings({ "unchecked", "null" })
+    public static void main(String[] args) throws FileNotFoundException, IOException{
         String courseData, roomData, buildingData;
         courseData = "sunnaData/courses.txt";
         roomData = "sunnaData/rooms.txt";
         buildingData = "sunnaData/buildings.txt";
                 
-        ArrayList<Section> courseList = new ArrayList<Section>();
-        ArrayList<Room> roomList = new ArrayList<Room>();
-        ArrayList<Professor> professorList = new ArrayList<Professor>();
+        ArrayList<Section> courseList = new ArrayList();
+        ArrayList<Room> roomList = new ArrayList();
+        ArrayList<Professor> professorList = new ArrayList();
         
         //using sets to easily create unique ArrayLists of these objects
         Set<String> weekendBuildings = new HashSet<>(); //contains only those buildings which are available on the weekend
@@ -70,12 +72,12 @@ public class ParseDU {
         // sort room (roomList) by capacity (largest to smallest)
         Collections.sort(roomList); 
         
-        //System.out.println("\nRooms with capacity largest to smallest:");
+        System.out.println("\nRooms with capacity largest to smallest:");
         
         // print out descending capacity levels per override toString() in Room class
-        for(Room str: roomList){
-			//System.out.println(str);
-	   }
+        for(Room classroom: roomList){
+            System.out.println(classroom);
+	}
  
         
         //PROFESSOR DATA
@@ -104,24 +106,18 @@ public class ParseDU {
 
              
             String cols[] = line.split("\\|");
-            
             //sets do not allow duplicates, so only create a new professor object if the name doesn't already exist in the set profNames
-                if(profNames.add(cols[5])){
-                    professorList.add( new Professor(cols[5], cols[1], cols[9]) );
-                }
+            if(profNames.add(cols[5])){
+                professorList.add( new Professor(cols[5], cols[1], cols[9]) );
+            }
 	    line = input.readLine();
 	}
-        
-//        for(Professor str: professorList){
-//			System.out.println(str.getFullName().toString());
-//	   }
-//        System.out.println(professorList.get(0).getFullName().toString());
         
         
         //COURSE SECTION DATA
         input = new BufferedReader(new FileReader(new File(courseData)));
         line = input.readLine();
-        line = input.readLine(); //the first line is headings
+        line = input.readLine(); //the first line is headings, so start with line 2
 	
         while(line!=null && !line.trim().equals("")){
             /*Data columns:
@@ -185,55 +181,11 @@ public class ParseDU {
 //			System.out.println(str);
 //	   	}
         
-        System.out.println("\nAll courses with assigned buckets:");
-        
-        // assign each section to a bucket based on start time and days offered (mon or tue)
-        for(Section str: courseList){
-        	if(str.getStartTime()<= 800)
-        		str.setBucket("A");
-        	if(str.getStartTime()>= 830 && str.getStartTime()<= 930 && ((str.getOfferedDays().equals("10100") || (str.getOfferedDays().equals("10101")))))
-        		str.setBucket("B");
-        	if(str.getStartTime()>= 945 && str.getStartTime()<= 1045 && ((str.getOfferedDays().equals("10100") || (str.getOfferedDays().equals("10101")))))
-        		str.setBucket("C");
-        	if(str.getStartTime()>= 1100 && str.getStartTime()<= 1145 && ((str.getOfferedDays().equals("10100") || (str.getOfferedDays().equals("10101")))))
-        		str.setBucket("D");
-        	if(str.getStartTime()>= 1150 && str.getStartTime()<= 1200 && ((str.getOfferedDays().equals("10100") || (str.getOfferedDays().equals("10101")))))
-        		str.setBucket("E");
-        	if(str.getStartTime()>= 1230 && str.getStartTime()<= 1300 && ((str.getOfferedDays().equals("10100") || (str.getOfferedDays().equals("10101")))))
-        		str.setBucket("F");
-        	if(str.getStartTime()>= 1330 && str.getStartTime()<= 1400 && ((str.getOfferedDays().equals("10100") || (str.getOfferedDays().equals("10101")))))
-        		str.setBucket("G");
-        	if(str.getStartTime()>= 1500 && str.getStartTime()<= 1530 && ((str.getOfferedDays().equals("10100") || (str.getOfferedDays().equals("10101")))))
-        		str.setBucket("H");
-        	if(str.getStartTime()>= 1600 && str.getStartTime()<= 1645 && ((str.getOfferedDays().equals("10100") || (str.getOfferedDays().equals("10101")))))
-        		str.setBucket("I");
-        	if(str.getStartTime()== 800 && str.getOfferedDays().equals("01010"))
-        		str.setBucket("J");
-        	if(str.getStartTime()>= 900 && str.getStartTime()<= 945 && str.getOfferedDays().equals("01010"))
-        		str.setBucket("K");
-        	if(str.getStartTime()>= 1000 && str.getStartTime()<= 1030 && str.getOfferedDays().equals("01010"))
-        		str.setBucket("L");
-        	if(str.getStartTime()>= 1100 && str.getStartTime()<= 1130  && str.getOfferedDays().equals("01010"))
-        		str.setBucket("M");
-        	if(str.getStartTime()== 1200 && str.getOfferedDays().equals("01010"))
-        		str.setBucket("N");
-        	if(str.getStartTime()>= 1230 && str.getStartTime()<= 1300 && str.getOfferedDays().equals("01010"))
-        		str.setBucket("O");
-        	if(str.getStartTime()>= 1315 && str.getStartTime()<= 1430 && str.getOfferedDays().equals("01010"))
-        		str.setBucket("P");
-        	if(str.getStartTime()>= 1500 && str.getStartTime()<= 1600 && str.getOfferedDays().equals("01010"))
-        		str.setBucket("Q");
-        	if(str.getStartTime()>= 1630 && str.getOfferedDays().equals("01010"))
-        		str.setBucket("R");           	
-        	
-        	//System.out.println(str);
-        }
-        
-        
-        // ARRAYLIST of Arraylists of courses in each bucket
+// ARRAYLIST of Arraylists of courses in each bucket
         // create arraylist of courses for each bucket, store these bucket arraylists into
         // a master arraylist
-        ArrayList<ArrayList> bucketList= new ArrayList<ArrayList>(); 
+        ArrayList<ArrayList> bucketList= new ArrayList<ArrayList>();
+        
         ArrayList<Section> bucketA =  new ArrayList<Section>();
         ArrayList<Section> bucketB =  new ArrayList<Section>();
         ArrayList<Section> bucketC =  new ArrayList<Section>();
@@ -251,48 +203,70 @@ public class ParseDU {
         ArrayList<Section> bucketO =  new ArrayList<Section>();
         ArrayList<Section> bucketP =  new ArrayList<Section>();
         ArrayList<Section> bucketQ =  new ArrayList<Section>();
-        ArrayList<Section> bucketR =  new ArrayList<Section>();        
+        ArrayList<Section> bucketR =  new ArrayList<Section>();
+
+        System.out.println("\nAll courses with assigned buckets:");
         
-        System.out.println("\nBucket ArrayList of courses in each bucket: \n");
-        
-        // get list of courses in specific bucket
-        for(Section str: courseList){
-        	if(str.getBucket().equalsIgnoreCase("A"))
-        		bucketA.add(str); // add to A arraylist
-        	if(str.getBucket().equalsIgnoreCase("B"))
-        		bucketB.add(str); // add to B arraylist
-        	if(str.getBucket().equalsIgnoreCase("C"))
-        		bucketC.add(str); // add to C arraylist
-        	if(str.getBucket().equalsIgnoreCase("D"))
-        		bucketD.add(str); // add to D arraylist
-        	if(str.getBucket().equalsIgnoreCase("E"))
-        		bucketE.add(str); // add to E arraylist
-        	if(str.getBucket().equalsIgnoreCase("F"))
-        		bucketF.add(str); // add to F arraylist
-        	if(str.getBucket().equalsIgnoreCase("G"))
-        		bucketG.add(str); // add to G arraylist
-        	if(str.getBucket().equalsIgnoreCase("H"))
-        		bucketH.add(str); // add to H arraylist
-        	if(str.getBucket().equalsIgnoreCase("I"))
-        		bucketI.add(str); // add to I arraylist
-        	if(str.getBucket().equalsIgnoreCase("J"))
-        		bucketJ.add(str); // add to J arraylist
-        	if(str.getBucket().equalsIgnoreCase("K"))
-        		bucketK.add(str); // add to K arraylist
-        	if(str.getBucket().equalsIgnoreCase("L"))
-        		bucketL.add(str); // add to L arraylist
-        	if(str.getBucket().equalsIgnoreCase("M"))
-        		bucketM.add(str); // add to M arraylist
-        	if(str.getBucket().equalsIgnoreCase("N"))
-        		bucketN.add(str); // add to N arraylist
-        	if(str.getBucket().equalsIgnoreCase("O"))
-        		bucketO.add(str); // add to O arraylist
-        	if(str.getBucket().equalsIgnoreCase("P"))
-        		bucketP.add(str); // add to P arraylist
-        	if(str.getBucket().equalsIgnoreCase("Q"))
-        		bucketQ.add(str); // add to Q arraylist
-        	if(str.getBucket().equalsIgnoreCase("R"))
-        		bucketR.add(str); // add to R arraylist
+        // assign each section to a bucket based on start time and days offered (mon or tue)
+        for(Section course: courseList){
+        	if(course.getStartTime()<= 800 && (course.getOfferedDays().equals("10100") || (course.getOfferedDays().equals("10101")))){
+        		course.setBucket("A");
+                        bucketA.add(course);
+                }else if(course.getStartTime()>= 830 && course.getStartTime()<= 930 && ((course.getOfferedDays().equals("10100") || (course.getOfferedDays().equals("10101"))))){
+        		course.setBucket("B");
+                        bucketB.add(course);
+                }else if(course.getStartTime()>= 945 && course.getStartTime()<= 1045 && ((course.getOfferedDays().equals("10100") || (course.getOfferedDays().equals("10101"))))){
+        		course.setBucket("C");
+                        bucketC.add(course);
+                }else if(course.getStartTime()>= 1100 && course.getStartTime()<= 1145 && ((course.getOfferedDays().equals("10100") || (course.getOfferedDays().equals("10101"))))){
+        		course.setBucket("D");
+                        bucketD.add(course);
+        	}else if(course.getStartTime()>= 1150 && course.getStartTime()<= 1200 && ((course.getOfferedDays().equals("10100") || (course.getOfferedDays().equals("10101"))))){
+        		course.setBucket("E");
+                        bucketE.add(course);
+        	}else if(course.getStartTime()>= 1230 && course.getStartTime()<= 1300 && ((course.getOfferedDays().equals("10100") || (course.getOfferedDays().equals("10101"))))){
+        		course.setBucket("F");
+                        bucketF.add(course);
+        	}else if(course.getStartTime()>= 1330 && course.getStartTime()<= 1400 && ((course.getOfferedDays().equals("10100") || (course.getOfferedDays().equals("10101"))))){
+        		course.setBucket("G");
+                        bucketG.add(course);
+        	}else if(course.getStartTime()>= 1500 && course.getStartTime()<= 1530 && ((course.getOfferedDays().equals("10100") || (course.getOfferedDays().equals("10101"))))){
+        		course.setBucket("H");
+                        bucketH.add(course);
+        	}else if(course.getStartTime()>= 1600 && course.getStartTime()<= 1645 && ((course.getOfferedDays().equals("10100") || (course.getOfferedDays().equals("10101"))))){
+        		course.setBucket("I");
+                        bucketI.add(course);
+        	}else if(course.getStartTime()<= 800 && course.getOfferedDays().equals("01010")){
+        		course.setBucket("J");
+                        bucketJ.add(course);
+        	}else if(course.getStartTime()>= 900 && course.getStartTime()<= 945 && course.getOfferedDays().equals("01010")){
+        		course.setBucket("K");
+                        bucketK.add(course);
+        	}else if(course.getStartTime()>= 1000 && course.getStartTime()<= 1030 && course.getOfferedDays().equals("01010")){
+        		course.setBucket("L");
+                        bucketL.add(course);
+        	}else if(course.getStartTime()>= 1100 && course.getStartTime()<= 1130  && course.getOfferedDays().equals("01010")){
+        		course.setBucket("M");
+                        bucketM.add(course);
+        	}else if(course.getStartTime()== 1200 && course.getOfferedDays().equals("01010")){
+        		course.setBucket("N");
+                        bucketN.add(course);
+        	}else if(course.getStartTime()>= 1230 && course.getStartTime()<= 1300 && course.getOfferedDays().equals("01010")){
+        		course.setBucket("O");
+                        bucketO.add(course);
+        	}else if(course.getStartTime()>= 1315 && course.getStartTime()<= 1430 && course.getOfferedDays().equals("01010")){
+        		course.setBucket("P");
+                        bucketP.add(course);
+        	}else if(course.getStartTime()>= 1500 && course.getStartTime()<= 1600 && course.getOfferedDays().equals("01010")){
+        		course.setBucket("Q");
+                        bucketQ.add(course);
+        	}else if(course.getStartTime()>= 1630 && course.getOfferedDays().equals("01010")){
+        		course.setBucket("R");    
+                        bucketR.add(course);                        
+                }else{
+                    System.out.println("Couldn't bucket course: " + course);
+                }
+        	//System.out.println("Bucketed successfully: " + course);
         }
         
         // Add courses in each bucket to bucketList ArrayList
@@ -315,52 +289,383 @@ public class ParseDU {
         bucketList.add(bucketQ);
         bucketList.add(bucketR);
         
+        // print out courses in each bucket and the bucket size for verification/accuracy
+        for(ArrayList bucket: bucketList){
+            System.out.println(bucket.toString()); 
+            System.out.println("Bucket size: "+bucket.size()+"\n");
+        }
+//        
+//      // SORTING course/section by start times
+//      int[] order = new int[courseList.size()]; // to track order of sorting     
+//      int[] startOrder = new int[courseList.size()]; // to hold sorted order of startTime values  
+//      
+//        for(int i=0; i<courseList.size();i++){
+//        	startOrder[i] = courseList.get(i).getStartTime();
+//        	//System.out.println(courseList.get(i).getStartTime());
+//        }
+//        
+//        for (int i = 0; i < startOrder.length - 1; i++)
+//        {
+//            int index = i;
+//            for (int j = i + 1; j < startOrder.length; j++)
+//                if (startOrder[j] < startOrder[index]) 
+//                    index = j;
+//      
+//            int smallerNumber = startOrder[index];  
+//            startOrder[index] = startOrder[i];
+//            startOrder[i] = smallerNumber;
+//            order[i] = index;
+//        }
+//        
+////        MySelectionSort.doSelectionSort(startOrder);
+//        for(int i:order){
+//            System.out.println(i);
+//        }
+//        
+//            System.out.println(startOrder.length+ " : "+order.length);
+//        
         
-//        // Example code to remove specific Section from the bucketList or from
-//        // a particular bucket
-//        for(int i=0; i<bucketList.size(); i++){ // bucket element of bucketList
-//        	ArrayList bucket = bucketList.get(i);
-//	        	for(int j=0; j<bucket.size(); j++){ // section of each bucket of bucketList
-//	        		Section course = (Section) bucket.get(j);
-//		        		if(course.getCallNumber()==12807) // find call number in se
-//		        			bucket.remove(j);   // if found, remove that section from that bucket    			
-//	        	}
-//        } // end for - remove specific Section
-       
-      
-        
-//    System.out.println("Courses inputted: " + courseList.size());
-//    System.out.println("Professors inputted: " + professorList.size());
-//    System.out.println("Rooms inputted: " + roomList.size());
+    System.out.println("Courses inputted: " + courseList.size());
+    System.out.println("Professors inputted: " + professorList.size());
+    System.out.println("Rooms inputted: " + roomList.size());
     
-    if(false){ //CHANGE TO TRUE FOR DEMONSTRATING TO PROF. SUNNA
-        System.out.println();
-        System.out.println("Section call number 13467 will have its exam scheduled in the first timeslot on Tuesday in THUY-304.");
-        
-        Section toSchedule = null;
-        Room examRoom = null;
-        for(Section temp : courseList){
-            //System.out.println(temp.getCallNumber() + " ");
-            if(temp.getCallNumber()==13467){
-                toSchedule = temp;
-                break;
+
+
+        //  ___  _   ___ ___   _ 
+        // | _ \/_\ / __/ __| / |
+        // |  _/ _ \\__ \__ \ | |
+        // |_|/_/ \_\___/___/ |_|
+        //
+        // look at normal classroom, and if so, try the normal professor 
+
+    int examDay = 0;
+    int examSlotNumber = 0;
+    
+    for(ArrayList<Section> currentBucket : bucketList){ 
+        //loop through all buckets
+        Iterator<Section> it = currentBucket.iterator(); 
+        Section currentSection;
+        while(it.hasNext()) {
+            currentSection = it.next();
+            if(currentSection.getClassroom().roomFree(examDay, examSlotNumber)){ 
+                //the regular classroom is free!
+                if(currentSection.isComputerFinal()){
+                    //if the section needs a computerized final
+                    if(currentSection.getClassroom().isComputerized() && 
+                        currentSection.getClassroom().getCapacity() >= currentSection.getEnrolled()){
+                        //classroom is computerized as we need, and it's big enough, so schedule the section for now
+                        currentSection.getClassroom().scheduleExam(currentSection, examDay, examSlotNumber);
+                        currentSection.setExamRoom(currentSection.getClassroom());
+                        
+                        //check normal professor, just for giggles
+                        if(currentSection.getInstructor().professorFree(examDay, examSlotNumber)){
+                            //professor is free, so just do the rest of scheduling
+                            currentSection.getInstructor().scheduleRoom(currentSection.getClassroom(), examDay, examSlotNumber);        
+                            currentSection.setExamProctor(currentSection.getInstructor());
+                            //remove the section from bucket and future passes
+                            it.remove();
+                        }else{
+                            //normal professor is not free, so we'll leave the section/room scheduled and move on
+                        }                   
+                    }else{
+                        //normal room is unsuitable - not free, or not big enough
+                    }
+                }else{ 
+                    //section does not need computerized room
+                    if(currentSection.getClassroom().getCapacity() >= 2*currentSection.getEnrolled()){
+                        //the normal classroom is big enough, so schedule the for now
+                        currentSection.getClassroom().scheduleExam(currentSection, examDay, examSlotNumber);
+                        currentSection.setExamRoom(currentSection.getClassroom());
+                            
+                        //check normal professor, just for giggles
+                        if(currentSection.getInstructor().professorFree(examDay, examSlotNumber)){
+                            //professor is free, so just do the rest of scheduling
+                            currentSection.getInstructor().scheduleRoom(currentSection.getClassroom(), examDay, examSlotNumber);        
+                            currentSection.setExamProctor(currentSection.getInstructor());
+                            //remove the section from bucket and future passes
+                            it.remove();
+                        }else{
+                            //normal professor is not free, so we'll leave the section/room scheduled and move on
+                        }
+                    }else{
+                        // normal classroom is not suitable
+                    }
+                }
             }
         }
         
-        for(Room temp : roomList){
-            //System.out.println(">" + temp.getBuildingCode() + "<>" + temp.getRoomNumber() + "< ");
-            if(temp.getBuildingCode().equals("THUY") && temp.getRoomNumber().equals("304")){
-                examRoom = temp;
-                break;
+        
+        
+        //  ___  _   ___ ___   ___ 
+        // | _ \/_\ / __/ __| |_  )
+        // |  _/ _ \\__ \__ \  / / 
+        // |_|/_/ \_\___/___/ /___|
+        //   
+        // look at normal professor for availability
+        
+        it = currentBucket.iterator(); 
+        while(it.hasNext()) {
+            currentSection = it.next(); 
+            if(currentSection.getInstructor().professorFree(examDay, examSlotNumber)){
+                //the original professor is available, so schedule him/her
+                currentSection.setExamProctor(currentSection.getInstructor());
+            }else{
+                //the original professor is not available at this time
             }
         }
         
-        if(examRoom!=null && toSchedule!=null){
-            examRoom.scheduleExam(toSchedule, 0, 1);
-            System.out.println(">>Verifying the professor of this course to prove scheduling complete: " + examRoom.getScheduledSection(0, 1).getInstructor().getFullName());
-        }else{
-            System.out.println(">>Error locating classroom or section.");
+        
+        
+        //  ___  _   ___ ___   ____
+        // | _ \/_\ / __/ __| |__ /
+        // |  _/ _ \\__ \__ \  |_ \
+        // |_|/_/ \_\___/___/ |___/
+        //          
+        // all possible ideal scheduling has been done (between sections and their original instructors, and their original classrooms)
+        // now time to fill in the pieces and find alternates where needed
+
+        it = currentBucket.iterator(); 
+        while(it.hasNext()) {
+            currentSection = it.next(); 
+            if(currentSection.getExamRoom()==null){
+                //find a classroom
+                
+                Room currentRoom = null;
+                for(Room currentRoomTemp : roomList){ 
+                    //count down to the smallest possible classroom that can accomodate this section
+                    if(currentRoomTemp.getCapacity()>=currentSection.getEnrolled()){
+                        currentRoom = currentRoomTemp;
+                    }else{
+                        break;
+                    }
+                } 
+                
+                int i;
+                for(i=roomList.indexOf(currentRoom);i>=0;i--){ 
+                    //start with currentRoom and start looking at increasingly larger rooms until one is suitable and free
+                    currentRoom = roomList.get(i);
+                    
+                    if(currentRoom.roomFree(examDay, examSlotNumber)){
+                        if(currentSection.isComputerFinal() && currentRoom.isComputerized()){
+                            //computerized room located, so schedule it
+                            currentSection.getExamProctor().scheduleRoom(currentRoom, examDay, examSlotNumber);
+                            currentRoom.scheduleExam(currentSection, examDay, examSlotNumber);
+                            currentSection.setExamRoom(currentRoom);
+                            break;
+                        }else if(currentRoom.getCapacity() >= 2*currentSection.getEnrolled()){
+                            //any room (computerized or not) will do, so long as it's big enough
+                            currentSection.getExamProctor().scheduleRoom(currentRoom, examDay, examSlotNumber);
+                            currentRoom.scheduleExam(currentSection, examDay, examSlotNumber);
+                            currentSection.setExamRoom(currentRoom);
+                            break;
+                        }
+                    }
+                currentSection.setExamProctor(currentSection.getInstructor());
+                }
+            } //END LOOP TO FIND A ROOM
+            
+            if(currentSection.getExamProctor()==null && currentSection.getExamRoom()!=null){
+                //if proctor still unscheduled, but we have a room scheduled, find a proctor (otherwise skip, since it won't schedule anyway without a room)
+                for(Professor currentProf : professorList){
+                    //loop through all professors
+                    if(currentProf.getDepartment().equals(currentSection.getDepartment())){
+                        //only check this person if his/her department is correct
+                        if(currentProf.professorFree(examDay, examSlotNumber)){
+                            //current professor is free for the slot, so schedule!
+                            currentProf.scheduleRoom(currentSection.getExamRoom(), examDay, examSlotNumber);
+                            currentSection.setExamProctor(currentProf);
+                            break;
+                        }
+                    }
+                }   
+            }
         }
+        
+        //System.out.println("Bucket looking at exam day "+examDay+" and timeslot "+examSlotNumber);
+        //next bucket is assigned to the next timeslot in the week's schedule
+        examSlotNumber++;
+        if(examSlotNumber>=5){
+            examDay++;
+            examSlotNumber=0;
         }
+    
+    
+//  ___  _   ___ ___    ___ 
+// | _ \/_\ / __/ __|  / , |_
+// |  _/ _ \\__ \__ \ /__   _|
+// |_|/_/ \_\___/___/    |_|
+        
+    //CLEAN UP PASS
+    it = currentBucket.iterator(); 
+        while(it.hasNext()) {
+            currentSection = it.next();
+            if(currentSection.getExamRoom()!=null && currentSection.getExamProctor()!=null){
+                it.remove();
+            }
+            if(currentSection.getExamRoom()==null || currentSection.getExamProctor()==null){
+                //couldn't schedule, so break the links
+                currentSection.setExamRoom(null);
+                currentSection.setExamProctor(null);
+            }
+        }
+    
+    }// End loop through buckets
+    
+    
+    
+    
+    
+
+//  ___  _   ___ ___   ___ 
+// | _ \/_\ / __/ __| |_  )
+// |  _/ _ \\__ \__ \  / / 
+// |_|/_/ \_\___/___/ /___|
+//   
+// normal classroom wasn't available, or no professor could be found
+// start by finding the most economical classroom, and then check normal professor before finding a substitute
+//
+//    examDay = 0;
+//    examSlotNumber = 0;
+//    
+//    for(ArrayList<Section> currentBucket : bucketList){ 
+//        //loop through all buckets
+//        Iterator<Section> it = currentBucket.iterator(); 
+//        Section currentSection;
+//        while(it.hasNext()) {
+//            currentSection = it.next();
+//            if(currentSection.isComputerFinal()){
+//                //if the section needs a computerized final
+//                Room currentRoom = null;
+//                for(Room currentRoomTemp : roomList){
+//                    if(currentRoomTemp.getCapacity()>=currentSection.getEnrolled()){
+//                        currentRoom = currentRoomTemp;
+//                    }else{
+//                        break;
+//                    }
+//                } 
+//                //at this point, currentRoom is the smallest room in the list that could hold the final
+//
+//                int i;
+//                for(i=roomList.indexOf(currentRoom);i>=0;i--){ 
+//                    //start with currentRoom and start looking at larger rooms until one is computerized
+//                    currentRoom = roomList.get(i);
+//                    if(currentRoom.isComputerized()){ 
+//                        //this room is computerized and, so check its availability
+//                        if(currentRoom.roomFree(examDay, examSlotNumber)){
+//                            //it's available, so find a professor now
+//
+//                            
+//                                    //check normal professor, then find others: - - - - - - - - - - - - - - - - - - - - - - (same as section below) 
+//                                    if(currentSection.getInstructor().professorFree(examDay, examSlotNumber)){
+//                                        //professor is free, so schedule!
+//                                        currentSection.getInstructor().scheduleRoom(currentRoom, examDay, examSlotNumber);
+//                                        currentRoom.scheduleExam(currentSection, examDay, examSlotNumber);
+//                                        currentSection.setExamProctor(currentSection.getInstructor());
+//                                        it.remove();
+//                                        break;
+//                                    }else{
+//                                        //normal professor is not free
+//                                        for(Professor currentProf : professorList){
+//                                            //loop through all professors
+//                                            if(currentProf.getDepartment().equals(currentSection.getDepartment())){
+//                                                //only check if the department is correct
+//                                                if(currentProf.professorFree(examDay, examSlotNumber)){
+//                                                    //current professor is free for the slot, so schedule!
+//                                                    currentProf.scheduleRoom(currentRoom, examDay, examSlotNumber);
+//                                                    currentRoom.scheduleExam(currentSection, examDay, examSlotNumber);
+//                                                    currentSection.setExamProctor(currentProf);
+//                                                    it.remove();
+//                                                    break;
+//                                                }
+//                                            }
+//                                        }   
+//                                    }
+//                                    // ^^^^^ end professor checking/searching  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+//                        }
+//                    }
+//                }
+//                
+//            }
+//            else{ // the final is not computerized
+//                Room currentRoom = null;
+//                for(Room currentRoomTemp : roomList){
+//                    if(currentRoomTemp.getCapacity()>=2*currentSection.getEnrolled()){
+//                        currentRoom = currentRoomTemp;
+//                    }else{
+//                        break;
+//                    }
+//                } 
+//                //at this point, currentRoom is the smallest room in the list that could hold the final
+//
+//                int i;
+//                for(i=roomList.indexOf(currentRoom);i>=0;i--){ 
+//                    //start with currentRoom and start looking at larger rooms until one is computerized
+//                    currentRoom = roomList.get(i);
+//                        if(currentRoom.roomFree(examDay, examSlotNumber)){
+//                            //it's available, so find a professor now
+//
+//                            
+//                                    //check normal professor, then find others: - - - - - - - - - - - - - - - - - - - - - - (same as section below) 
+//                                    
+//                                    //WHAT FOLLOWS IS AN EXACT COPY OF THE SNIPPET ABOVE, BUT FOR SOME REASON BUGS OUT ON LINE 555...?
+//                                    
+////                                    if(currentSection.getInstructor().professorFree(examDay, examSlotNumber)){
+////                                        //professor is free, so schedule!
+////                                        currentSection.getInstructor().scheduleRoom(currentRoom, examDay, examSlotNumber);
+////                                        currentRoom.scheduleExam(currentSection, examDay, examSlotNumber);
+////                                        currentSection.setExamProctor(currentSection.getInstructor());
+////                                        it.remove();
+////                                        break;
+////                                    }else{
+////                                        //normal professor is not free
+////                                        for(Professor currentProf : professorList){
+////                                            //loop through all professors
+////                                            if(currentProf.getDepartment().equals(currentSection.getDepartment())){
+////                                                //only check if the department is correct
+////                                                if(currentProf.professorFree(examDay, examSlotNumber)){
+////                                                    //current professor is free for the slot, so schedule!
+////                                                    currentProf.scheduleRoom(currentRoom, examDay, examSlotNumber);
+////                                                    currentRoom.scheduleExam(currentSection, examDay, examSlotNumber);
+////                                                    currentSection.setExamProctor(currentProf);
+////                                                    it.remove();
+////                                                    break;
+////                                                }
+////                                            }
+////                                        }   
+////                                    }
+//                                    // ^^^^^ end professor checking/searching  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+//                        }
+//                    }
+//                }
+//        } //This ends the second pass: checking for available classroom and then first the normal professor, then a substitute if needed
+//        
+//        //next bucket is assigned to the next timeslot in the week's schedule
+//        examSlotNumber++;
+//        if(examSlotNumber>=5){
+//            examDay++;
+//            examSlotNumber=0;
+//        }
+//    }
+
+        System.out.println("The following courses are still unscheduled:");
+        int count = 0;
+        
+        for(ArrayList<Section> currentBucket : bucketList){ 
+            //loop through all buckets
+            Iterator<Section> it = currentBucket.iterator(); 
+            Section currentSection;
+            while(it.hasNext()) {
+                currentSection = it.next();
+                //System.out.println(currentSection);
+                count++;
+            }
+            System.out.println("");
+        }
+        System.out.println("Total unscheduled: " + count);
+
+        for(Room currentRoom : roomList){ 
+            System.out.println(currentRoom.printSchedule());
+        }
+
     }
 }

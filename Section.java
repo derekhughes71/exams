@@ -17,6 +17,7 @@ public class Section implements Comparable {
  
  //final exam attributes
  Professor examProctor;
+ Room examRoom;
 
     public Section(int callNumber, Professor instructor, Room classroom, String department, int courseNumber, 
                     String offeredDays, int startTime, int endTime, int enrolled, boolean computerFinal) {
@@ -126,6 +127,14 @@ public class Section implements Comparable {
 
     public void setExamProctor(Professor examProctor) {
         this.examProctor = examProctor;
+    }
+    
+    public Room getExamRoom() {
+        return examRoom;
+    }
+
+    public void setExamRoom(Room examRoom) {
+        this.examRoom = examRoom;
     }
 
     @Override
