@@ -142,15 +142,31 @@ public class Room implements Comparable {
 	}
     
     public String printSchedule() {
-        String out = buildingCode + roomNumber + " Call numbers:\n";
+        String out;
+        boolean isEmpty = true;
+        checkEmpty:
         for(int i=0;i<timeSlots.length;i++){
-            for(int j=0;j<timeSlots[i].length;j++){
-                out = out + (j>0 ? "\t" : "") + (timeSlots[i][j]==null ? "____" : timeSlots[i][j].getCallNumber());
+                for(int j=0;j<timeSlots[i].length;j++){
+                    if(timeSlots[i][j]!=null){
+                        isEmpty=false;
+                        break checkEmpty;
+                }
             }
-            out = out + "\n";
+        }
+        if(isEmpty){
+            out = "No exams scheduled in room "+buildingCode + roomNumber+".";
+        }else{
+            out = buildingCode + roomNumber + " - Capacity: " + capacity + " - " + (computerized ? "(computerized) ":"") + "Scheduled call numbers:\n";
+            for(int i=0;i<timeSlots.length;i++){
+                for(int j=0;j<timeSlots[i].length;j++){
+                    out = out + (j>0 ? "\t" : "") + (timeSlots[i][j]==null ? "____" : timeSlots[i][j].getCallNumber());
+                }
+                out = out + "\n";
+            }
         }
         return out;
     }
+     
 	
     @Override
     public String toString() {
